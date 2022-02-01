@@ -56,9 +56,10 @@ func createMovie(w http.ResponseWriter, r *http.Request) {
 	var movie Movie
 	_ = json.NewDecoder(r.Body).Decode(&movie)
 	// params := mux.Vars(r)
-	// movies = append(movies, movies(ID: params["id"], Isbn: params["isbn"], title: params["title"], Director: params["director"]))
+
+	// movies = append(movies, Movie{ID: params["id"], Isbn: params["isbn"], Title: params["title"], Director: &Director{Firstname: params["firstname"], Lastname: params["lastname"]}})
 	movies = append(movies, movie)
-	// movies = movies[-1]
+	// movier := movies[len(movies)-1]
 	json.NewEncoder(w).Encode(movie)
 
 }
@@ -89,7 +90,7 @@ func main() {
 	r.HandleFunc("/movies/{id}", getMovie).Methods("GET")
 	r.HandleFunc("/movies", createMovie).Methods("POST")
 	r.HandleFunc("/movies/{id}", updateMovie).Methods("PUT")
-	r.HandleFunc("movies/{id}", deleteMovie).Methods("DELETE")
+	r.HandleFunc("/movies/{id}", deleteMovie).Methods("DELETE")
 
 	fmt.Printf("starting port at Server 8000\n")
 	log.Fatal(http.ListenAndServe(":8000", r))
